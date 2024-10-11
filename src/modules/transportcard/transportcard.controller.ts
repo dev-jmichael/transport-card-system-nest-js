@@ -40,9 +40,13 @@ export class TransportCardController {
   @ApiResponse({
     status: 201,
     description: 'Transport card created successfully.',
-    schema: {
-      type: 'object',
-      $ref: getSchemaPath(RestApiResponse),
+    content: {
+      'application/json': {
+        schema: {
+          type: 'object',
+          $ref: getSchemaPath(RestApiResponse),
+        },
+      },
     },
   })
   @ApiResponse({
