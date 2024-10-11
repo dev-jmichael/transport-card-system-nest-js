@@ -1,13 +1,9 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-// import { TransportCardRepository } from './transportcard.repository';
 import { TransportCardMapper } from './mapper/transportcard.mapper';
 import { CreateTransportCardRequest } from './dto/create-transport-card-request';
 import { TransportCardResponse } from './dto/transport-card-response';
-import {
-  TransportCardTypeEnum,
-  TransportCardType,
-} from '../../common/constants/transportcard.type';
+import { TransportCardType } from './value-objects/transport-card-type';
 import { TransportCard } from './transportcard.entity';
 import { Repository } from 'typeorm';
 import { CardNotFoundException } from '../../common/exceptions/card-not-found.exception';

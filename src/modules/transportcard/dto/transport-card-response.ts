@@ -1,7 +1,4 @@
-import {
-  TransportCardType,
-  TransportCardTypeEnum,
-} from 'src/common/constants/transportcard.type';
+import { TransportCardTypeEnum } from '../value-objects/transport-card-type.enum';
 
 export class TransportCardResponse {
   cardNumber: number;

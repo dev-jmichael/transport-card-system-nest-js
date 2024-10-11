@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TransportCard } from '../transportcard/transportcard.entity'; // Assuming entity is named TransportCard
-import { TransportCardType } from '../../common/constants/transportcard.type';
+import { TransportCardType } from '../transportcard/value-objects/transport-card-type';
 import { CardNotFoundException } from '../../common/exceptions/card-not-found.exception';
 import { InsufficientBalanceException } from '../../common/exceptions/insufficient-balance.exception';
 

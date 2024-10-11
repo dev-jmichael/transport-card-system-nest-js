@@ -1,9 +1,5 @@
-import { InvalidCardTypeException } from '../exceptions/invalid-card-type.exception';
-
-export enum TransportCardTypeEnum {
-  REGULAR = 'Regular',
-  DISCOUNTED = 'Discounted',
-}
+import { InvalidCardTypeException } from '../../../common/exceptions/invalid-card-type.exception';
+import { TransportCardTypeEnum } from './transport-card-type.enum';
 
 export class TransportCardType {
   private static readonly CARD_TYPE_MAP: Record<string, TransportCardType> = {};
