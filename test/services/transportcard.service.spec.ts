@@ -7,10 +7,8 @@ import { TransportCardMapper } from '../../src/modules/transportcard/mapper/tran
 import { CreateTransportCardRequest } from '../../src/modules/transportcard/dto/create-transport-card-request';
 import { TransportCardResponse } from '../../src/modules/transportcard/dto/transport-card-response';
 import { CardNotFoundException } from '../../src/common/exceptions/card-not-found.exception';
-import {
-  TransportCardType,
-  TransportCardTypeEnum,
-} from '../../src/common/constants/transportcard.type'; // Assuming this is your class for card type
+import { TransportCardType } from '../../src/modules/transportcard/value-objects/transport-card-type';
+import { TransportCardTypeEnum } from '../../src/modules/transportcard/value-objects/transport-card-type.enum';
 
 describe('TransportCardService', () => {
   let service: TransportCardService;

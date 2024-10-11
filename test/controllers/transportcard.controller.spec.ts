@@ -5,7 +5,7 @@ import { CreateTransportCardRequest } from '../../src/modules/transportcard/dto/
 import { TransportCardResponse } from '../../src/modules/transportcard/dto/transport-card-response';
 import { RestApiResponse } from '../../src/common/dto/rest-api-response';
 import { NotFoundException } from '@nestjs/common';
-import { TransportCardTypeEnum } from '../../src/common/constants/transportcard.type';
+import { TransportCardTypeEnum } from '../../src/modules/transportcard/value-objects/transport-card-type.enum';
 
 describe('TransportCardController', () => {
   let controller: TransportCardController;
@@ -48,7 +48,7 @@ describe('TransportCardController', () => {
       const result = await controller.createTransportCard(request);
 
       // Assert
-      expect(result).toEqual(new RestApiResponse(true, response));
+      expect(result).toEqual(response);
       expect(service.createTransportCard).toHaveBeenCalledWith(request);
     });
 
@@ -92,7 +92,7 @@ describe('TransportCardController', () => {
       const result = await controller.getAllTransportCards();
 
       // Assert
-      expect(result).toEqual(new RestApiResponse(true, response));
+      expect(result).toEqual(response);
       expect(service.getAllTransportCards).toHaveBeenCalled();
     });
   });
@@ -113,7 +113,7 @@ describe('TransportCardController', () => {
       const result = await controller.getTransportCardById(cardNumber);
 
       // Assert
-      expect(result).toEqual(new RestApiResponse(true, response));
+      expect(result).toEqual(response);
       expect(service.getTransportCardById).toHaveBeenCalledWith(cardNumber);
     });
 

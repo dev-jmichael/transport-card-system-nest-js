@@ -5,10 +5,8 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { TransportCard } from '../../src/modules/transportcard/transportcard.entity';
 import { CardNotFoundException } from '../../src/common/exceptions/card-not-found.exception';
 import { InsufficientBalanceException } from '../../src/common/exceptions/insufficient-balance.exception';
-import {
-  TransportCardType,
-  TransportCardTypeEnum,
-} from '../../src/common/constants/transportcard.type'; // Assuming TransportCardType is a class
+import { TransportCardType } from '../../src/modules/transportcard/value-objects/transport-card-type';
+import { TransportCardTypeEnum } from '../../src/modules/transportcard/value-objects/transport-card-type.enum';
 
 describe('CardTransactionServiceTest', () => {
   let service: CardTransactionService;
@@ -62,7 +60,7 @@ describe('CardTransactionServiceTest', () => {
       const result = await service.processFareDeduction(cardNumber);
 
       // Assert
-      expect(result).toBe('Current balance: 492');
+      expect(result).toBe(transportCard);
       expect(transportCard.loadAmount).toBe(492);
       expect(repository.save).toHaveBeenCalledWith(transportCard);
     });

@@ -1,12 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CardTransactionController } from '../../src/modules/cardtransactions/cardtransactions.controller';
 import { CardTransactionService } from '../../src/modules/cardtransactions/cardtransactions.service';
-import { HttpStatus } from '@nestjs/common';
 import { InsufficientBalanceException } from '../../src/common/exceptions/insufficient-balance.exception';
+import { TransportCard } from '../../src/modules/transportcard/transportcard.entity';
+import { TransportCardTypeEnum } from '../../src/modules/transportcard/value-objects/transport-card-type.enum';
 
 describe('CardTransactionController', () => {
   let controller: CardTransactionController;
-  let service: jest.Mocked<CardTransactionService>;
+  let service: CardTransactionService;
+
+  const mockTransportCard = {
+    cardNumber: 12345,
+    cardType: 'REGULAR',
+    loadAmount: 100,
+  };
+
+  const mockService = {
+    processFareDeduction: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -14,9 +25,7 @@ describe('CardTransactionController', () => {
       providers: [
         {
           provide: CardTransactionService,
-          useValue: {
-            processFareDeduction: jest.fn(),
-          },
+          useValue: mockService, // Provide mock service
         },
       ],
     }).compile();
@@ -24,37 +33,32 @@ describe('CardTransactionController', () => {
     controller = module.get<CardTransactionController>(
       CardTransactionController,
     );
-    service = module.get(CardTransactionService);
+    service = module.get<CardTransactionService>(CardTransactionService);
   });
 
-  describe('processFareDeduction', () => {
-    it('should process fare deduction successfully', async () => {
-      // Arrange
-      const cardNumber = 123;
-      const expectedResponse = 'Current balance: 500';
+  afterEach(() => {
+    jest.clearAllMocks(); // Clear mocks after each test
+  });
 
-      service.processFareDeduction.mockResolvedValue(expectedResponse);
+  it('should process fare deduction successfully and return the transport card', async () => {
+    // Mock service to return a valid transport card
+    mockService.processFareDeduction.mockResolvedValue(mockTransportCard);
 
-      // Act
-      const result = await controller.processFareDeduction(cardNumber);
+    const result = await controller.processFareDeduction(12345);
 
-      // Assert
-      expect(result).toBe(expectedResponse);
-      expect(service.processFareDeduction).toHaveBeenCalledWith(cardNumber);
-    });
+    expect(result).toEqual(mockTransportCard); // Check if response is the mock transport card
+    expect(service.processFareDeduction).toHaveBeenCalledWith(12345);
+  });
 
-    it('should throw InsufficientBalanceException when balance is insufficient', async () => {
-      // Arrange
-      const cardNumber = 123;
-      service.processFareDeduction.mockRejectedValue(
-        new InsufficientBalanceException('Insufficient balance on the card.'),
-      );
+  it('should throw InsufficientBalanceException if balance is too low', async () => {
+    // Mock service to throw InsufficientBalanceException
+    mockService.processFareDeduction.mockRejectedValue(
+      new InsufficientBalanceException('Insufficient balance on the card.'),
+    );
 
-      // Act & Assert
-      await expect(controller.processFareDeduction(cardNumber)).rejects.toThrow(
-        InsufficientBalanceException,
-      );
-      expect(service.processFareDeduction).toHaveBeenCalledWith(cardNumber);
-    });
+    await expect(controller.processFareDeduction(12345)).rejects.toThrow(
+      InsufficientBalanceException,
+    );
+    expect(service.processFareDeduction).toHaveBeenCalledWith(12345);
   });
 });
