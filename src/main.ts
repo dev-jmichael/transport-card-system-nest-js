@@ -5,12 +5,14 @@ import { GlobalExceptionHandler } from './common/exceptions/globalexception.hand
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ApiResponseFormatInterceptor } from './common/interceptors/api-response-format.interceptor';
 import { RestApiResponse } from './common/dto/rest-api-response';
+import { LoggingInterceptor } from './common/interceptors/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new GlobalExceptionHandler());
   app.useGlobalInterceptors(new ApiResponseFormatInterceptor());
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   const config = new DocumentBuilder()
     .setTitle('Transport Card API')
