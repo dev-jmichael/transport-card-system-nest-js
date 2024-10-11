@@ -5,6 +5,7 @@ import {
   HttpCode,
   HttpStatus,
   Logger,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CardTransactionService } from './cardtransactions.service';
@@ -32,7 +33,7 @@ export class CardTransactionController {
     description: 'Insufficient balance exception.',
   })
   async processFarePayment(
-    @Param('cardNumber') cardNumber: number,
+    @Param('cardNumber', ParseIntPipe) cardNumber: number,
   ): Promise<TransportCard> {
     this.logger.log(
       `Received request to process fare payment for card number: ${cardNumber}`,
