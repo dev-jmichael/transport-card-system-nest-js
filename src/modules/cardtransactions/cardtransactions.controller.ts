@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CardTransactionService } from './cardtransactions.service';
+import { TransportCard } from '../transportcard/transportcard.entity';
 
 @ApiTags('Card Transactions')
 @Controller('/api/v1/transport-cards')
@@ -29,7 +30,7 @@ export class CardTransactionController {
   })
   async processFareDeduction(
     @Param('cardNumber') cardNumber: number,
-  ): Promise<string> {
+  ): Promise<TransportCard> {
     this.logger.log(
       `Received request to process fare deduction for card number: ${cardNumber}`,
     );

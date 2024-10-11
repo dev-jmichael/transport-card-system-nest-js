@@ -15,7 +15,7 @@ export class CardTransactionService {
     private readonly repository: Repository<TransportCard>,
   ) {}
 
-  async processFareDeduction(cardNumber: number): Promise<string> {
+  async processFareDeduction(cardNumber: number): Promise<TransportCard> {
     this.logger.log(`Processing fare deduction for card number: ${cardNumber}`);
 
     // Fetch the transport card by ID
@@ -57,6 +57,6 @@ export class CardTransactionService {
       `Fare deducted successfully. Updated balance for card number ${cardNumber}: ${updatedTransportCard.loadAmount}`,
     );
 
-    return `Current balance: ${updatedTransportCard.loadAmount}`;
+    return updatedTransportCard;
   }
 }
