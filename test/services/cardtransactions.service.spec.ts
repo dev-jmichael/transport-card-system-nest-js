@@ -30,7 +30,7 @@ describe('CardTransactionServiceTest', () => {
     repository = module.get(getRepositoryToken(TransportCard));
   });
 
-  describe('processFareDeduction', () => {
+  describe('processFarePayment', () => {
     it('should process fare deduction successfully', async () => {
       // Arrange
       const cardNumber = 123;
@@ -57,7 +57,7 @@ describe('CardTransactionServiceTest', () => {
       repository.save.mockResolvedValue(transportCard);
 
       // Act
-      const result = await service.processFareDeduction(cardNumber);
+      const result = await service.processFarePayment(cardNumber);
 
       // Assert
       expect(result).toBe(transportCard);
@@ -90,7 +90,7 @@ describe('CardTransactionServiceTest', () => {
       repository.findOne.mockResolvedValue(transportCard);
 
       // Act & Assert
-      await expect(service.processFareDeduction(cardNumber)).rejects.toThrow(
+      await expect(service.processFarePayment(cardNumber)).rejects.toThrow(
         InsufficientBalanceException,
       );
       expect(repository.save).not.toHaveBeenCalled(); // Ensure save is not called
@@ -103,7 +103,7 @@ describe('CardTransactionServiceTest', () => {
       repository.findOne.mockResolvedValue(null); // Card not found
 
       // Act & Assert
-      await expect(service.processFareDeduction(cardNumber)).rejects.toThrow(
+      await expect(service.processFarePayment(cardNumber)).rejects.toThrow(
         CardNotFoundException,
       );
       expect(repository.save).not.toHaveBeenCalled(); // Ensure save is not called

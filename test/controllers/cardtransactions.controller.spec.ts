@@ -16,7 +16,7 @@ describe('CardTransactionController', () => {
   };
 
   const mockService = {
-    processFareDeduction: jest.fn(),
+    processFarePayment: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -42,23 +42,23 @@ describe('CardTransactionController', () => {
 
   it('should process fare deduction successfully and return the transport card', async () => {
     // Mock service to return a valid transport card
-    mockService.processFareDeduction.mockResolvedValue(mockTransportCard);
+    mockService.processFarePayment.mockResolvedValue(mockTransportCard);
 
-    const result = await controller.processFareDeduction(12345);
+    const result = await controller.processFarePayment(12345);
 
     expect(result).toEqual(mockTransportCard); // Check if response is the mock transport card
-    expect(service.processFareDeduction).toHaveBeenCalledWith(12345);
+    expect(service.processFarePayment).toHaveBeenCalledWith(12345);
   });
 
   it('should throw InsufficientBalanceException if balance is too low', async () => {
     // Mock service to throw InsufficientBalanceException
-    mockService.processFareDeduction.mockRejectedValue(
+    mockService.processFarePayment.mockRejectedValue(
       new InsufficientBalanceException('Insufficient balance on the card.'),
     );
 
-    await expect(controller.processFareDeduction(12345)).rejects.toThrow(
+    await expect(controller.processFarePayment(12345)).rejects.toThrow(
       InsufficientBalanceException,
     );
-    expect(service.processFareDeduction).toHaveBeenCalledWith(12345);
+    expect(service.processFarePayment).toHaveBeenCalledWith(12345);
   });
 });
