@@ -10,10 +10,13 @@ import { RestApiResponse } from '../dto/rest-api-response';
 
 @Injectable()
 export class ApiResponseFormatInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept<T>(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Observable<RestApiResponse<T>> {
     return next.handle().pipe(
       map((data) => {
-        return new RestApiResponse(true, data);
+        return new RestApiResponse<T>(true, data);
       }),
     );
   }
