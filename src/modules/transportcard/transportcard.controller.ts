@@ -8,6 +8,7 @@ import {
   HttpCode,
   Logger,
   NotFoundException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import {
   ApiOperation,
@@ -124,7 +125,7 @@ export class TransportCardController {
     description: 'Card not found exception.',
   })
   async getTransportCardById(
-    @Param('cardNumber') cardNumber: number,
+    @Param('cardNumber', ParseIntPipe) cardNumber: number,
   ): Promise<RestApiResponse<TransportCardResponse>> {
     this.logger.log(
       `Received request to retrieve transport card with card number: ${cardNumber}`,
