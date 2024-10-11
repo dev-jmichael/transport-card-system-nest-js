@@ -15,8 +15,8 @@ export class CardTransactionService {
     private readonly repository: Repository<TransportCard>,
   ) {}
 
-  async processFareDeduction(cardNumber: number): Promise<TransportCard> {
-    this.logger.log(`Processing fare deduction for card number: ${cardNumber}`);
+  async processFarePayment(cardNumber: number): Promise<TransportCard> {
+    this.logger.log(`Processing fare payment for card number: ${cardNumber}`);
 
     // Fetch the transport card by ID
     const transportCard = await this.repository.findOne({
@@ -54,7 +54,7 @@ export class CardTransactionService {
     transportCard.loadAmount -= fare;
     const updatedTransportCard = await this.repository.save(transportCard);
     this.logger.log(
-      `Fare deducted successfully. Updated balance for card number ${cardNumber}: ${updatedTransportCard.loadAmount}`,
+      `Fare payment was successful. Updated balance for card number ${cardNumber}: ${updatedTransportCard.loadAmount}`,
     );
 
     return updatedTransportCard;

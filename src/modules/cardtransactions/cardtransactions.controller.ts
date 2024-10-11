@@ -20,25 +20,28 @@ export class CardTransactionController {
   @Patch(':cardNumber')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Process fare deduction',
-    description: "Processes fare deduction via commuter's card number.",
+    summary: 'Process fare payment',
+    description: "Processes fare payment via commuter's card number.",
   })
-  @ApiResponse({ status: 200 })
+  @ApiResponse({
+    status: 200,
+    description: 'Fare payment is successful',
+  })
   @ApiResponse({
     status: 402,
     description: 'Insufficient balance exception.',
   })
-  async processFareDeduction(
+  async processFarePayment(
     @Param('cardNumber') cardNumber: number,
   ): Promise<TransportCard> {
     this.logger.log(
-      `Received request to process fare deduction for card number: ${cardNumber}`,
+      `Received request to process fare payment for card number: ${cardNumber}`,
     );
 
-    const response = await this.service.processFareDeduction(cardNumber);
+    const response = await this.service.processFarePayment(cardNumber);
 
     this.logger.log(
-      `Successfully processed fare deduction for card number: ${cardNumber}`,
+      `Successfully processed fare payment for card number: ${cardNumber}`,
     );
 
     return response;
