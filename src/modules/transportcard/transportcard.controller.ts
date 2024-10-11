@@ -65,7 +65,7 @@ export class TransportCardController {
   })
   async createTransportCard(
     @Body() request: CreateTransportCardRequest,
-  ): Promise<RestApiResponse<TransportCardResponse>> {
+  ): Promise<TransportCardResponse> {
     this.logger.log(
       `Received request to create transport card for type: ${request.cardType}`,
     );
@@ -73,7 +73,7 @@ export class TransportCardController {
     this.logger.log(
       `Successfully created transport card with card number: ${response.cardNumber}`,
     );
-    return new RestApiResponse(true, response);
+    return response;
   }
 
   @Get()
@@ -90,15 +90,13 @@ export class TransportCardController {
       $ref: getSchemaPath(RestApiResponse),
     },
   })
-  async getAllTransportCards(): Promise<
-    RestApiResponse<TransportCardResponse[]>
-  > {
+  async getAllTransportCards(): Promise<TransportCardResponse[]> {
     this.logger.log('Received request to retrieve all transport cards');
     const response = await this.service.getAllTransportCards();
     this.logger.log(
       `Successfully retrieved ${response.length} transport cards`,
     );
-    return new RestApiResponse(true, response);
+    return response;
   }
 
   @Get(':cardNumber')
@@ -126,7 +124,7 @@ export class TransportCardController {
   })
   async getTransportCardById(
     @Param('cardNumber', ParseIntPipe) cardNumber: number,
-  ): Promise<RestApiResponse<TransportCardResponse>> {
+  ): Promise<TransportCardResponse> {
     this.logger.log(
       `Received request to retrieve transport card with card number: ${cardNumber}`,
     );
@@ -138,6 +136,6 @@ export class TransportCardController {
     this.logger.log(
       `Successfully retrieved transport card with card number: ${cardNumber}`,
     );
-    return new RestApiResponse(true, response);
+    return response;
   }
 }
